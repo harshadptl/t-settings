@@ -37,10 +37,6 @@ func GetConfigsFor(db string, vertical string) (params map[string]string) {
 	return
 }
 
-func main() {
-	fmt.Println(GetConfigsFor("mysql", "m1"))
-}
-
 var (
 	configFilePath = "" //file path to a config file
 	config         *Config
@@ -48,7 +44,7 @@ var (
 )
 
 func Configure(filePath ...string) {
-	fmt.Println(filePath)
+	fmt.Println("Config file: ", filePath)
 	num_config_files := len(filePath)
 	if num_config_files == 1 {
 		configFilePath = filePath[0]
