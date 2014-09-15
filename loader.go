@@ -48,14 +48,15 @@ var (
 )
 
 func Configure(filePath ...string) {
+	fmt.Println(filePath)
 	num_config_files := len(filePath)
-	if num_config_files == 0 {
+	if num_config_files == 1 {
+		configFilePath = filePath[0]
+	} else if num_config_files == 0 {
 		configFilePath = "src/github.com/vireshas/t-settings/config.json"
-	} else if num_config_files == 1 {
+	} else {
 		fmt.Println("we dont support than one config file at the moment")
 		os.Exit(1)
-	} else {
-		configFilePath = filePath[0]
 	}
 	loadConfig(true)
 	s := make(chan os.Signal, 1)
