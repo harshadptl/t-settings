@@ -1,26 +1,26 @@
 {
   "redis" : {
-     "flight" : {
+     "r1" : {
          "host" : "localhost",
          "port" : "639"
      },
-     "hotel" : {
+     "r2" : {
         "host" : "localhost",
         "port" : "6379"
      },
-     "bus" : {
+     "r3" : {
         "host" : "localhost",
         "port" : "6379"
      }
   },
   "mysql" : {
-     "flight" : {
+     "m1" : {
         "host" : "localhost",
         "port" : "6379",
         "username" : "root",
         "password" : ""
      },
-     "hotel" : {
+     "m2" : {
         "host" : "localhost",
         "port" : "6379",
         "username" : "root",
