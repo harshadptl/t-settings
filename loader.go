@@ -1,49 +1,44 @@
-package settings
+package main
 
 import (
 	"encoding/json"
-	//"fmt"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
 )
 
-/*
+type Config map[string]interface{}
+
+func getConfigsFor(db string) (dbSettings Config) {
+	jsonConfig := *config
+	redisSpecificConfigs := jsonConfig[db]
+	dbSettings = redisSpecificConfigs.(map[string]interface{})
+	return
+}
+
+func getVerticalSpecificSettings(vertical string, settings Config) Config {
+	verticalSpecificConfigs := settings[vertical]
+	config := verticalSpecificConfigs.(map[string]interface{})
+	return config
+}
+
+func GetConfigsFor(db string, vertical string) (params map[string]string) {
+	configLock.RLock()
+	defer configLock.RUnlock()
+	params = make(map[string]string)
+	verticalSettings := getConfigsFor(db)
+	configs := getVerticalSpecificSettings(vertical, verticalSettings)
+	for config := range configs {
+		params[config] = configs[config].(string)
+	}
+	return
+}
+
 func main() {
-	jsonConfig := GetConfig()
-	redis := jsonConfig.Redis
-	fmt.Println(redis)
-	fmt.Println(redis[0].Flight.Host)
-	fmt.Println(redis[1].Hotel.Host)
-	fmt.Println(redis[2].Bus.Host)
-}
-*/
-
-type redisDialParams struct {
-	Host string
-	Port int
-}
-
-type mysqlDialParams struct {
-	Host     string
-	Port     int
-	Username string
-	Password string
-}
-
-type Config struct {
-	Redis []struct {
-		Flight redisDialParams
-		Hotel  redisDialParams
-		Bus    redisDialParams
-	}
-	Mysql []struct {
-		Flight mysqlDialParams
-		Hotel  mysqlDialParams
-	}
+	fmt.Println(GetConfigsFor("mysql", "flight"))
 }
 
 var (
@@ -51,12 +46,6 @@ var (
 	config         *Config
 	configLock     = new(sync.RWMutex)
 )
-
-func GetConfig() *Config {
-	configLock.RLock()
-	defer configLock.RUnlock()
-	return config
-}
 
 func init() {
 	loadConfig(true)
@@ -66,7 +55,7 @@ func init() {
 		for {
 			<-s
 			loadConfig(false)
-			log.Println("Reloaded config file")
+			fmt.Println("Reloaded config file")
 		}
 	}()
 }
@@ -74,7 +63,7 @@ func init() {
 func loadConfig(fail bool) {
 	file, err := ioutil.ReadFile(configFilePath)
 	if err != nil {
-		log.Println("Error in opening config: ", err)
+		fmt.Println("Error in opening config: ", err)
 		if fail {
 			os.Exit(1)
 		}
@@ -82,7 +71,7 @@ func loadConfig(fail bool) {
 
 	temp := new(Config)
 	if err = json.Unmarshal(file, &temp); err != nil {
-		log.Println("Error in parsing config: ", err)
+		fmt.Println("Error in parsing config: ", err)
 		if fail {
 			os.Exit(1)
 		}
