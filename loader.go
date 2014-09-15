@@ -38,7 +38,7 @@ func GetConfigsFor(db string, vertical string) (params map[string]string) {
 }
 
 func main() {
-	fmt.Println(GetConfigsFor("mysql", "flight"))
+	fmt.Println(GetConfigsFor("mysql", "m1"))
 }
 
 var (
