@@ -43,17 +43,21 @@ var (
 	configLock     = new(sync.RWMutex)
 )
 
-func Configure(filePath ...string) {
-	fmt.Println("Config file: ", filePath)
-	num_config_files := len(filePath)
+func setConfigFilePath(files ...string) {
+	num_config_files := len(files)
 	if num_config_files == 1 {
-		configFilePath = filePath[0]
+		configFilePath = files[0]
 	} else if num_config_files == 0 {
 		configFilePath = "src/github.com/vireshas/t-settings/config.json"
 	} else {
 		fmt.Println("we dont support than one config file at the moment")
 		os.Exit(1)
 	}
+}
+
+func Configure(filePath ...string) {
+	fmt.Println("Config file: ", filePath)
+	setConfigFilePath(filePath...)
 	loadConfig(true)
 	s := make(chan os.Signal, 1)
 	signal.Notify(s, syscall.SIGUSR2)
