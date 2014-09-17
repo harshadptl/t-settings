@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/signal"
+	"strings"
 	"sync"
 	"syscall"
 )
@@ -19,8 +20,12 @@ func getConfigsFor(db string) (dbSettings Config) {
 	return
 }
 
-func getVerticalSpecificSettings(vertical string, settings Config) Config {
+func getVerticalSpecificSettings(db string, vertical string, settings Config) Config {
 	verticalSpecificConfigs := settings[vertical]
+	if verticalSpecificConfigs == nil {
+		panic(vertical + " doesn't exist. Use one of these dbs " + strings.Join(GetAllDbsFor(db), ", "))
+		verticalSpecificConfigs = make(map[string]interface{})
+	}
 	config := verticalSpecificConfigs.(map[string]interface{})
 	return config
 }
@@ -30,15 +35,19 @@ func GetConfigsFor(db string, vertical string) (params map[string]string) {
 	defer configLock.RUnlock()
 	params = make(map[string]string)
 	verticalSettings := getConfigsFor(db)
-	configs := getVerticalSpecificSettings(vertical, verticalSettings)
+	configs := getVerticalSpecificSettings(db, vertical, verticalSettings)
 	for config := range configs {
 		params[config] = configs[config].(string)
 	}
 	return
 }
 
-func main() {
-	fmt.Println(GetConfigsFor("mysql", "m1"))
+func GetAllDbsFor(db string) (allDbs []string) {
+	verticalSettings := getConfigsFor(db)
+	for key := range verticalSettings {
+		allDbs = append(allDbs, key)
+	}
+	return
 }
 
 var (
