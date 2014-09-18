@@ -18,13 +18,15 @@
         "host" : "localhost",
         "port" : "6379",
         "username" : "root",
-        "password" : ""
+        "password" : "",
+        "database" : "bm"
      },
      "m2" : {
         "host" : "localhost",
         "port" : "6379",
         "username" : "root",
-        "password" : ""
+        "password" : "",
+        "database" : "bm"
      }
   }
 }
