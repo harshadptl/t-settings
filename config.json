@@ -2,7 +2,7 @@
   "redis" : {
      "r1" : {
          "host" : "localhost",
-         "port" : "639"
+         "port" : "6379"
      },
      "r2" : {
         "host" : "localhost",
@@ -16,14 +16,14 @@
   "mysql" : {
      "m1" : {
         "host" : "localhost",
-        "port" : "6379",
+        "port" : "3306",
         "username" : "root",
         "password" : "",
         "database" : "bm"
      },
      "m2" : {
         "host" : "localhost",
-        "port" : "6379",
+        "port" : "3306",
         "username" : "root",
         "password" : "",
         "database" : "bm"
