@@ -61,7 +61,7 @@ func setConfigFilePath(files ...string) {
 	if num_config_files == 1 {
 		configFilePath = files[0]
 	} else if num_config_files == 0 {
-		configFilePath = "src/github.com/vireshas/t-settings/config.json"
+		configFilePath = "src/github.com/goibibo/t-settings/config.json"
 	} else {
 		fmt.Println("we dont support than one config file at the moment")
 		os.Exit(1)
