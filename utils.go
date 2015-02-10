@@ -9,3 +9,7 @@ func ConstructMysqlPath(params map[string]string) string {
 		"@tcp(" + params["host"] + ":" + params["port"] +
 		")/" + params["database"]
 }
+
+func ConstructMemcachePath(params map[string]string) string {
+	return params["host"] + ":" + params["port"]
+}
