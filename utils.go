@@ -11,5 +11,5 @@ func ConstructMysqlPath(params map[string]string) string {
 }
 
 func ConstructMemcachePath(params map[string]string) string {
-	return params["host"] + ":" + params["port"]
+	return params["connections"]
 }
